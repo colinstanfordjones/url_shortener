@@ -22,7 +22,7 @@ I decided to use JWT as the method for session management due to its ease of use
 
 This is built using the `devise-jwt` library as this has the most community support and robust feature set. There are full controller integration tests for handing user creation, signing in and signing off.
 
-`User` is fairly barebones. Its main purpose is handling authentication and is used to build associated urls. This built to prevent unauthorized requests from modifying a URL.
+`User` is fairly barebones. Its main purpose is handling authentication and is used to build associated urls. This is built to prevent unauthorized requests from modifying a URL.
 
 ### Create a user
 
