@@ -12,7 +12,6 @@ class Url < ApplicationRecord
 
   def valid_expiration
     unless expiration.nil?
-      puts DateTime.parse(expiration.to_s)
       errors.add(:expiration, 'must be a valid datetime') if ((DateTime.parse(expiration.to_s) rescue ArgumentError) == ArgumentError)
     end
   end

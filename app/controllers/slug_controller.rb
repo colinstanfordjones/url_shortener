@@ -1,7 +1,8 @@
 class SlugController < ActionController::Base
   def slug
-    url = Url.find_by_slug(params[:slug])
-  
+    url_encoded = ERB::Util.url_encode(params[:slug])
+    url = Url.find_by_slug(url_encoded)
+
     if !url.nil? && url.active?
       redirect_to url.endpoint, status: 302
     else

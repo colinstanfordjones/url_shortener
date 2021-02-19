@@ -82,17 +82,16 @@ This is will be your authorization token.
   * `slug` is the desired path, and must be URL safe characters. If not specified a random string will be generated. The namespace of `api` is reserved for obvious reasons.
   * `expiration` is a datetime string of the desired expiration. If not specified, the URL will last indefinitely.
 * Successful return format `{"url": {"id": <X>, "endpoint": <ENDPOINT>, "slug": <SLUG>, "expiration": <EXPIRATION>}}`
-* Error return format `{"error": "<REASON>"}`
-
-### Using slug endpoints
-
-* `localhost:3000/<SLUG>`
+* Error return format `{"errors": {"<FIELD>": "<REASON>"}}`
 
 ### Destroy URL requests
 
 * `curl -v -X DELETE -H "Content-Type: application/json" -H "Authorization: Bearer <AUTHORIZATION TOKEN>" localhost:3000/api/urls/<ID>`
-* Successful return format `{"success": "true"}`
-* Error return format `{"error": "<REASON>"}`
+* Successful return format `{"success": true}`
+
+### Using slug endpoints
+
+* `localhost:3000/<SLUG>`
 
 ### Notes on URL service
 
