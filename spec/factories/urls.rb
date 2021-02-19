@@ -1,4 +1,4 @@
 FactoryBot.define do
-  factory :urls do
+  factory :url do
   end
 end

@@ -64,5 +64,6 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
   config.include JSONAPI::RSpec
   config.include UserHelpers
+  config.include UrlHelpers
   config.include ApiHelpers
 end
