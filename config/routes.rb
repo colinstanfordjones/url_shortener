@@ -1,9 +1,8 @@
 Rails.application.routes.draw do
-  resources :urls
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   namespace :api, defaults: { format: :json } do
     resources :users, only: %w[show]
-    resources :urls, only: %w[index, show, create, destroy]
+    resources :urls, only: %w[create update destroy]
   end
 
   devise_for :users,

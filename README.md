@@ -22,7 +22,7 @@ I decided to use JWT as the method for session management due to its ease of use
 
 This is built using the `devise-jwt` library as this has the most community support and robust feature set. There are full controller integration tests for handing user creation, signing in and signing off.
 
-`User` is fairly barebones. It's main purpose is handling authentication and is used to build associated urls. This built to prevent unauthorized requests from modifying a URL.
+`User` is fairly barebones. Its main purpose is handling authentication and is used to build associated urls. This built to prevent unauthorized requests from modifying a URL.
 
 ### Create a user
 
@@ -76,12 +76,12 @@ This is will be your authorization token.
 
 ### Create URL requests
 
-* `curl -v -X PUT -H "Content-Type: application/json\n Authorization: JWT <AUTHORIZATION TOKEN>" -d <JSON> localhost:3000/api/url/create`
-* JSON format of `{"url": {"url": "https://example.com", (OPTIONAL)"slug": "<SLUG>", (OPTIONAL)"expiration": "2021-02-21T22:01:01" } }`
-  * `url` must be a URL with valid encoding.
+* `curl -v -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <AUTHORIZATION TOKEN>" -d <JSON> localhost:3000/api/urls`
+* JSON format of `{"url": {"endpoint": "https://example.com", (OPTIONAL)"slug": "<SLUG>", (OPTIONAL)"expiration": "2021-02-21T22:01:01" } }`
+  * `endpoint` must be a URL with valid encoding.
   * `slug` is the desired path, and must be URL safe characters. If not specified a random string will be generated. The namespace of `api` is reserved for obvious reasons.
   * `expiration` is a datetime string of the desired expiration. If not specified, the URL will last indefinitely.
-* Successful return format `{"url": {"id": <X>}}`
+* Successful return format `{"url": {"id": <X>, "endpoint": <ENDPOINT>, "slug": <SLUG>, "expiration": <EXPIRATION>}}`
 * Error return format `{"error": "<REASON>"}`
 
 ### Using slug endpoints
@@ -90,7 +90,7 @@ This is will be your authorization token.
 
 ### Destroy URL requests
 
-* `curl -v -X PUT -H "Content-Type: application/json\n Authorization: JWT <AUTHORIZATION TOKEN>" localhost:3000/api/url/<ID>/destroy`
+* `curl -v -X DELETE -H "Content-Type: application/json" -H "Authorization: Bearer <AUTHORIZATION TOKEN>" localhost:3000/api/urls/<ID>`
 * Successful return format `{"success": "true"}`
 * Error return format `{"error": "<REASON>"}`
 

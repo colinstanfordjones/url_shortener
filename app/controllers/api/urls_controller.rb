@@ -1,43 +1,44 @@
-class Api::UrlsController < ApplicationController
-  before_action :set_url, only: %i[ show update destroy ]
+class Api::UrlsController < Api::BaseController
+  before_action :set_url, only: %i[ update destroy ]
 
-  # GET /urls
-  # GET /urls.json
-  def index
-    @urls = Url.all
-  end
-
-  # GET /urls/1
-  # GET /urls/1.json
-  def show
-  end
-
-  # POST /urls
-  # POST /urls.json
+  # POST /api/urls
+  # POST /api/urls.json
   def create
-    @url = Url.new(url_params)
+    @url = Url.new(url_params.merge({user: current_user}))
 
     if @url.save
-      render :show, status: :created, location: @url
+      render_jsonapi_response(@url)
     else
-      render json: @url.errors, status: :unprocessable_entity
+      render json: {errors: @url.errors}, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /urls/1
-  # PATCH/PUT /urls/1.json
+  # PATCH/PUT /api/urls/1
+  # PATCH/PUT /api/urls/1.json
   def update
-    if @url.update(url_params)
-      render :show, status: :ok, location: @url
+    if valid_user && @url.update(url_params)
+      render_jsonapi_response(@url)
     else
-      render json: @url.errors, status: :unprocessable_entity
+      if valid_user
+        render json: {errors: @url.errors}, status: :unprocessable_entity
+      else
+        render json: {errors: "unauthorized"}, status: :unauthorized 
+      end
     end
   end
 
-  # DELETE /urls/1
-  # DELETE /urls/1.json
+  # DELETE /api/urls/1
+  # DELETE /api/urls/1.json
   def destroy
-    @url.destroy
+    if valid_user && @url.destroy
+      render json: {success: true}, status: :ok
+    else
+      if valid_user
+        render json: {errors: @url.errors}, status: :unprocessable_entity
+      else
+        render json: {errors: "unauthorized"}, status: :unauthorized 
+      end
+    end
   end
 
   private
@@ -48,6 +49,16 @@ class Api::UrlsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def url_params
-      params.fetch(:url, {})
+      params_syms = %I[
+        endpoint
+        slug
+        expiration
+      ]
+
+      params.require(:url).permit(*params_syms)
+    end
+
+    def valid_user
+      @url.user_id == current_user.id
     end
 end

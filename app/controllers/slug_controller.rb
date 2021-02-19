@@ -3,7 +3,7 @@ class SlugController < ActionController::Base
     url = Url.find_by_slug(params[:slug])
   
     if !url.nil? && url.active?
-      redirect_to url.url, status: 302
+      redirect_to url.endpoint, status: 302
     else
       render :fourohfour, status: 404
     end 
